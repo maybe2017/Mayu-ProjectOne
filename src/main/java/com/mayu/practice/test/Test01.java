@@ -1,19 +1,24 @@
 package com.mayu.practice.test;
 
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * @Author: 马瑜
  * @Date: 2023/6/27 17:04
- * @Description: TODO
+ * @Description:
  */
+@Slf4j
 public class Test01 {
-    int j;
     public static void main(String[] args) {
-        Test01 t = new Test01();
-        t.t();
+        testEor();
     }
 
-    private void t() {
-        System.out.println(j);
+    // 异或的测试
+    private static void testEor() {
+        int i = 999;
+        int j = 888;
+        System.out.println(i ^ i ^ j);
+        System.out.println(0 ^ i ^ j ^ i ^ j ^ i);
     }
 }
