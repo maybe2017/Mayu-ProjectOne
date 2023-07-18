@@ -1,4 +1,4 @@
-package com.mayu.practice.sort;
+package com.mayu.practice.alg.sort;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
