@@ -1,6 +1,4 @@
 package com.mayu.practice.test;
-
-
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -11,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class Test01 {
     public static void main(String[] args) {
-        testEor();
+//        testEor();
     }
 
     // 异或的测试

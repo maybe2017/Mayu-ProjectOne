@@ -1,6 +1,7 @@
 package com.mayu.practice.alg.sort;
 
 import com.alibaba.fastjson.JSON;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -79,7 +80,7 @@ public class MergeSortForInversePair {
 
                 // 因为已经排好序，故找到左侧第一个大于当前右边的数即可
                 for (int i = leftPointer; i <= mid; i++) {
-                    res.add(new Pair(arr[leftPointer], arr[rightPointer]));
+                    res.add(new Pair(arr[i], arr[rightPointer]));
                 }
                 helpArr[helpArrIndex++] = arr[rightPointer++];
             } else {
@@ -104,7 +105,7 @@ public class MergeSortForInversePair {
         return res;
     }
 
-
+    @Data
     static class Pair {
         int left;
         int right;
