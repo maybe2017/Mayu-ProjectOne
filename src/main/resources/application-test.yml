@@ -16,7 +16,7 @@ spring:
     database: 15
     # Redis服务器地址
     # host: 10.40.7.26
-    host: 10.40.7.58
+    host: 10.40.7.76
     # Redis服务器连接端口
     port: 6379
     # Redis服务器连接密码（默认为空）
@@ -35,7 +35,7 @@ spring:
     timeout: 2000
     sentinel:
       master: mymaster
-      nodes: 10.40.7.58:26380
+      nodes: 10.40.7.76:26380
 
   # 邮箱配置
   # smtp 服务器地址
@@ -75,7 +75,7 @@ elasticsearch:
 message:
   monitor:
     # 推送动作中断监控定时任务开关
-    switch: true
+    switch: false
 #    cron: 0 0/1 * * * ?
     cron: 0 0/01 * * * ?
     # 告警间隔(分钟)

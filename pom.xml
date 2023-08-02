@@ -238,37 +238,23 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.jetbrains.kotlin</groupId>
-                <artifactId>kotlin-maven-plugin</artifactId>
-                <version>1.3.70</version>
-                <executions>
-                    <execution>
-                        <id>compile</id>
-                        <phase>process-sources</phase>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
     </build>
 
-<!--    <repositories>-->
-<!--        <repository>-->
-<!--            <id>mvn-repo</id>-->
-<!--            <name>mvn-repo</name>-->
-<!--            <url>https://artifacts.iflytek.com/artifactory/mvn-repo/</url>-->
-<!--            <releases>-->
-<!--                <enabled>true</enabled>-->
-<!--            </releases>-->
-<!--            <snapshots>-->
-<!--                <enabled>true</enabled>-->
-<!--                <updatePolicy>always</updatePolicy>-->
-<!--            </snapshots>-->
-<!--        </repository>-->
-<!--    </repositories>-->
+    <repositories>
+        <repository>
+            <id>mvn-repo</id>
+            <name>mvn-repo</name>
+            <url>https://artifacts.iflytek.com/artifactory/mvn-repo/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+        </repository>
+    </repositories>
 
     <pluginRepositories>
         <pluginRepository>
@@ -285,18 +271,4 @@
         </pluginRepository>
     </pluginRepositories>
 
-    <distributionManagement>
-        <repository>
-            <id>mvn-releases</id>
-            <url>
-                https://artifacts.iflytek.com/artifactory/obu-mvn-release-private/
-            </url>
-        </repository>
-        <snapshotRepository>
-            <id>mvn-snapshots</id>
-            <url>
-                https://artifacts.iflytek.com/artifactory/obu-mvn-snapshot-private/
-            </url>
-        </snapshotRepository>
-    </distributionManagement>
 </project>

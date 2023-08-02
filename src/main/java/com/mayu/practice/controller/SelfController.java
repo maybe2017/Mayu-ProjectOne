@@ -47,4 +47,5 @@ public class SelfController {
         }
         return ResponseMap.success(resMap);
     }
+    // 加密后 启动参数需要加上 -Djasypt.encryptor.password=encryptPassword
 }
