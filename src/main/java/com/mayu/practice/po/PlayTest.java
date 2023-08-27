@@ -14,5 +14,6 @@ public class PlayTest {
     private String startTime;
     private String micName;
     private String cusName;
-    private int cusSpeakName;
+    private Integer cusSpeakName;
+    private String cityName;
 }

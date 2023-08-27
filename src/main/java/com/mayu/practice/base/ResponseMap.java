@@ -2,9 +2,6 @@ package com.mayu.practice.base;
 
 import java.util.HashMap;
 
-/**
- * @author lazycece
- */
 public class ResponseMap extends HashMap<String, Object> {
     public static final String CODE_FIELD = "resCode";
     public static final String MESSAGE_FIELD = "resDesc";

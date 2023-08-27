@@ -5,7 +5,9 @@ import com.mayu.practice.po.PlayTest;
 import com.mayu.practice.po.bis.ResourceInfo;
 import com.mayu.practice.po.bis.StateStats;
 import com.mayu.practice.utils.DateUtils;
+import com.mongodb.client.MongoCursor;
 import lombok.extern.slf4j.Slf4j;
+import org.bson.Document;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +21,10 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 
@@ -68,5 +72,35 @@ public class MongoServiceTest {
         query.with(Sort.by("startTime").ascending());
         PlayTest po =  mongoTemplate.findOne(query, PlayTest.class);
         log.info("========>>>结果: {}", JSON.toJSONString(po));
+    }
+    @Test
+    public void handleData() {
+        String startTimeStr = "2023-04-05 00:00:00";
+        String endTimeStr = "2023-06-05 00:00:00";
+        Query timeQuery = new Query();
+        timeQuery.addCriteria(Criteria.where("startTime").gte(startTimeStr).lt(endTimeStr));
+        Document queryFields = new Document();
+        queryFields.append("cityName", 1);
+        MongoCursor<Document> cursor = null;
+        try {
+            log.info("开始进行游标查询! batchSize:3000, query: {}", JSON.toJSONString(queryFields));
+            cursor = mongoTemplate.getCollection("website")
+                    .find(timeQuery.getQueryObject())
+                    .projection(queryFields)
+                    .batchSize(2)
+                    .noCursorTimeout(true)
+                    .iterator();
+            Document doc = null;
+            List<String> conversationIdList = new ArrayList<>();
+            while (cursor.hasNext()) {
+                doc = cursor.next();
+                PlayTest simpleInfo = JSON.parseObject(JSON.toJSONString(doc), PlayTest.class);
+                log.info("{}", JSON.toJSONString(simpleInfo));
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
     }
 }
