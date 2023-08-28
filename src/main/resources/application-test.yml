@@ -36,7 +36,13 @@ spring:
     sentinel:
       master: mymaster
       nodes: 10.40.7.76:26380
-
+  # 集成MQ配置
+  rabbitmq:
+    host: 10.40.7.67
+    port: 5672
+    username: yuma5
+    password: Mayu8119
+    virtual-host: /
   # 邮箱配置
   # smtp 服务器地址
   mail:
@@ -70,6 +76,12 @@ elasticsearch:
   #  index: indexvoice_142
   hotWordIndex: hotword_test_faw_vw
   faw: faw_service_quality_test_faw_vw
+
+# MQ配置
+rabbit:
+  queueName:
+    # 判断服务类型客户需求是否已经解决
+    delayJudgeKhServiceStatus: delayJudgeKhServiceStatusQueue
 
 # 对亚信消息推送的监控
 message:
