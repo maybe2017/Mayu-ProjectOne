@@ -1,10 +1,30 @@
 # 数据库设置
 spring:
+  datasource:
+    dynamic:
+      primary: master
+      datasource:
+        #主库
+        master:
+          type: com.alibaba.druid.pool.DruidDataSource
+          url: jdbc:mysql://172.31.53.78:3306/qywx_intention_mayu?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false&serverTimezone=Asia/Shanghai
+          username: root
+          password: Iflytek1212
+          driver-class-name: com.mysql.jdbc.Driver
+#  data:
+#    mongodb:
+#      base:
+#        uri: mongodb://qywx:iflytek123!@192.168.30.23:27117,192.168.30.22:27117,192.168.30.21:27117/qywx_prod
+#        database: qywx_prod
+#      intention:
+#        uri: mongodb://qywx:iflytek123!@192.168.30.23:27117,192.168.30.22:27117,192.168.30.21:27117/qywx_intention
+#        database: qywx_intention
   # mongodb配置
   data:
     mongodb:
-#      uri: mongodb://10.40.7.26:27017/sas_multi_test_hunanyd_wh
       uri: mongodb://10.40.7.26:27017/play
+      #uri: mongodb://qywx:iflytek123!@188.106.25.88:27017/qywx_basehistory
+  #      uri: mongodb://10.40.7.26:27017/sas_multi_test_gzh_hbyd
   jackson:
     time-zone: GMT+8
   aop:                        # AOP
@@ -15,13 +35,12 @@ spring:
     # Redis数据库索引（默认为0）
     database: 6
     # Redis服务器地址
-    # host: 10.40.7.26
     host: 10.40.7.76
     # Redis服务器连接端口
     port: 6379
     # Redis服务器连接密码（默认为空）
     password: Fwts#2023
-    # 连接池最大连接数（使用负值表示没有限制）
+    # spring-data 可支持jedis，也可支持 lettuce两种客户端
     jedis:
       pool:
         max-active: 64
@@ -82,7 +101,9 @@ rabbit:
   queueName:
     # 判断服务类型客户需求是否已经解决
     delayJudgeKhServiceStatus: delayJudgeKhServiceStatusQueue
-
+jk:
+  qualityTask:
+    semaphore: 3
 # 对亚信消息推送的监控
 message:
   monitor:
@@ -105,3 +126,20 @@ message:
       sendTo: wanyysss@163.com, seaveany@163.com, 470751407@qq.com
       delayText: 企业微信数据同步异常，已连续10次推送动作延迟30分钟以上！延迟消息msgId样本：%s
       pushSuspendText: 企业微信数据同步异常，亚信侧已超过10分钟未进行数据推送..
+
+# 星火大模型的接入，APPID：e86a3d40
+bigModel:
+  httpUrl: https://spark-api-open.xf-yun.com/v1/chat/completions
+  printPromptLog: false
+  configOne:
+    apiKey: f7aa33c0339947ae6b8470e201acf2d5
+    apiSecret: ZDg1NTc1OTBmMDYxZjNjMWNlODRjNTM5
+    bigModeVersion: lite
+  # 会话分类流程-重跑时使用50路的max版本 (appId:1aa962fb)
+  configTwo:
+    apiKey: f7aa33c0339947ae6b8470e201acf2d5
+    apiSecret: ZDg1NTc1OTBmMDYxZjNjMWNlODRjNTM5
+    bigModeVersion: lite
+#    apiKey: 64115bc95bbd7f841ee81e93121480d5
+#    apiSecret: NTliYTIyNWMxYWE2ZGJkZWY3NDM3ODc2
+#    bigModeVersion: generalv3.5

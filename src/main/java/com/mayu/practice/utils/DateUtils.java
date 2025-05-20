@@ -1,19 +1,95 @@
 package com.mayu.practice.utils;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.FastDateFormat;
 
 import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
-
+@Slf4j
 public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
+
+    public static String YYYY_MM_DD = "yyyy-MM-dd";
+    public static String YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd HH:mm:ss";
+    public static String YYYYMMDD = "yyyyMMdd";
+
+    public static String getStartTimeStr(int offset) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, offset);
+        // 移除时分秒信息
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return parseDateToStr(YYYY_MM_DD_HH_MM_SS, calendar.getTime());
+    }
+
+    public static Date convertToDate(String string, String formatString) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat(formatString);
+        return sdf.parse(string);
+    }
+    public static Date parse2Date(String dateString, String formatPattern) {
+        try {
+            return new SimpleDateFormat(formatPattern).parse(dateString);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    // 参数传毫秒
+    public static String getDatePoor(long milliseconds) {
+        if (0 == milliseconds) {
+            return "0秒";
+        }
+
+        long nd = 1000 * 24 * 60 * 60L;
+        long nh = 1000 * 60 * 60L;
+        long nm = 1000 * 60L;
+        long ns = 1000;
+
+        // 计算差多少天
+        long day = milliseconds / nd;
+        // 计算差多少小时
+        long hour = milliseconds % nd / nh;
+        // 计算差多少分钟
+        long min = milliseconds % nd % nh / nm;
+        // 计算差多少秒//输出结果
+        long sec = milliseconds % nd % nh % nm / ns;
+
+        String res = "";
+        if (day > 0) {
+            res = day + "天";
+        }
+        if (hour > 0) {
+            res = res + hour + "小时";
+        }
+        if ((hour > 0 && min == 0) || (min > 0)) {
+            res = res + min + "分钟";
+        }
+        if (sec > 0) {
+            res = res + sec + "秒";
+        }
+        if (day == 0 && hour == 0 && min == 0 && sec == 0) {
+            res = res + milliseconds + "毫秒";
+        }
+        return res;
+    }
+
+    public static String getDayByOffSet(String pattern, int offset) {
+        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+        Calendar s = Calendar.getInstance();
+        s.add(Calendar.DATE, offset * (-1));
+        return sdf.format(s.getTime());
+    }
     private DateUtils() {
     }
 
-    public static String YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd HH:mm:ss";
+    private static final TimeZone TIME_ZONE = TimeZone.getTimeZone("Etc/GMT-8");
 
     static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     static SimpleDateFormat smf = new SimpleDateFormat("yyyy-MM");
@@ -42,6 +118,11 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         }
     }
 
+    public static String format(Date date, String formatString) {
+        FastDateFormat format = FastDateFormat.getInstance(formatString, TIME_ZONE);
+        return format.format(date);
+    }
+
     public static String getDateOffset(String startTimeStr, int offset, String formatStr) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(dateTime(formatStr, startTimeStr));
@@ -57,6 +138,15 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
             return parseDate(str.toString(), parsePatterns);
         } catch (ParseException e) {
             return null;
+        }
+    }
+
+    public static Date parse(String dateString, String pattern) {
+        try {
+            return new SimpleDateFormat(pattern).parse(dateString);
+        } catch (Exception e) {
+            log.error("时间格式化错误！{}", e.getMessage(), e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -133,23 +223,24 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 
     //转换日期格式
     public static String fomateDate(Date date) {
-        //计算日期，计算1天前的时间
         return sdf.format(date.getTime());
     }
 
     public static String formatDate(Date date, SimpleDateFormat sdf) {
-        //计算日期，计算1天前的时间
         return sdf.format(date.getTime());
     }
 
-    public static final Date dateTime(final String format, final String ts) {
+    public static String formatDate(Date date, String pattern) {
+        return new SimpleDateFormat(pattern).format(date.getTime());
+    }
+
+    public static Date dateTime(final String format, final String ts) {
         try {
             return new SimpleDateFormat(format).parse(ts);
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
     }
-
 
     //字符串转日期格式
     public static Date StrToDate(String str) throws ParseException {

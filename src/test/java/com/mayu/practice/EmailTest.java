@@ -1,6 +1,7 @@
 package com.mayu.practice;
 
 import com.alibaba.fastjson.JSON;
+import com.mayu.NeptuneApplication;
 import com.mayu.practice.service.EmailService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;

@@ -1,57 +1,69 @@
 package com.mayu.practice.config;
 
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.BindingBuilder;
-import org.springframework.amqp.core.CustomExchange;
-import org.springframework.amqp.core.Queue;
-import org.springframework.context.annotation.Bean;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.HashMap;
-import java.util.Map;
+import javax.annotation.Resource;
 
 /**
  * @Author: 马瑜
  * @Date: 2023/8/27 11:57
  * @Description: RabbitMQ生产者交换器、绑定、队列声明
- * 这里的延迟意味着消息延迟路由到队列或其它交换器
+ * 自动创建交换机 与 队列 及 绑定
  */
 @Configuration
+@Slf4j
 public class MQQueueConfig {
-
     /**
-     * 延迟交换器
+     * 交换器
      */
-    public static final String DELAY_TEST_EXCHANGE = "test_delay_exchange";
+    public static final String TEST_EXCHANGE_NAME = "test_exchange";
     /**
-     * 延迟队列
+     * 队列
      */
-    public static final String DELAY_TEST_QUEUE = "delay_queue_for_test";
+    public static final String TEST_QUEUE_NAME = "test_queue";
     /**
-     * 延迟路由 delay.test.routing.key
+     * 路由 test.routing.key
      */
-    public static final String DELAY_TEST_ROUTING_KEY = "delay_queue_for_test";
+    public static final String TEST_ROUTING_KEY = "routing_key_for_test_queue";
 
-
-    @Bean
-    public CustomExchange delayExchange() {
-        Map<String, Object> args = new HashMap<>();
-        args.put("x-delayed-type", "direct");
-        // 特别注意: 使用的是CustomExchange, 不是DirectExchange，另外CustomExchange的类型必须是x-delayed-message
-        return new CustomExchange(DELAY_TEST_EXCHANGE, "x-delayed-message", true, false, args);
-    }
-
-    @Bean
-    public Queue queue() {
-        // 定义优先级队列，消息最大优先级为15，优先级范围为0-15，数字越大优先级越高
-        Map<String, Object> args = new HashMap<>();
-        args.put("x-max-priority", 15);
-        // 设置持久化队列
-        return new Queue(DELAY_TEST_QUEUE, true);
-    }
-
-    @Bean
-    public Binding binding() {
-        return BindingBuilder.bind(queue()).to(delayExchange()).with(DELAY_TEST_ROUTING_KEY).noargs();
-    }
+//    @Resource
+//    private AmqpAdmin amqpAdmin;
+//
+//    @Bean
+//    public DirectExchange createExchange() {
+//        // 第一个参数为交换机名字，第二个参数为是否持久化，第三个参数为不使用交换机时删除
+//        DirectExchange directExchange = new DirectExchange(TEST_EXCHANGE_NAME, true, false);
+//        amqpAdmin.declareExchange(directExchange);
+//        log.info("====>> 交换机创建成功! exchange:{}", TEST_EXCHANGE_NAME);
+//        return directExchange;
+//    }
+//
+//    @Bean
+//    public Queue queue() {
+//        /**
+//         * 第一个参数为队列名字，
+//         * 第二个参数为是否持久化，
+//         * 第三个参数为是否排他（true：一个连接只能有一个队列，false：一个连接可以有多个（推荐））
+//         * 第四个参数为不使用队列时自动删除
+//         */
+//        Queue queue = new Queue(TEST_QUEUE_NAME, true, false, false);
+//        amqpAdmin.declareQueue(queue);
+//        log.info("====>> 队列创建成功! queue:{}", TEST_QUEUE_NAME);
+//        return queue;
+//    }
+//
+//    @Bean
+//    public Binding binding() {
+//        /**
+//         * 第一个参数为目的地，就是交换机或者队列的名字
+//         * 第二个参数为目的地类型，交换机还是队列
+//         * 第三个参数为交换机，QUEUE-队列  EXCHANGE-交换机
+//         * 第四个参数为路由键，匹配的名称
+//         */
+//        Binding binding = BindingBuilder.bind(queue()).to(createExchange()).with(TEST_ROUTING_KEY);
+//        amqpAdmin.declareBinding(binding);
+//        log.info("====>> 绑定成功! exchange:{}, queue:{}, routing_key:{}", TEST_EXCHANGE_NAME, TEST_QUEUE_NAME, TEST_ROUTING_KEY);
+//        return binding;
+//    }
 }

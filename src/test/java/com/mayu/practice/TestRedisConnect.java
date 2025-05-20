@@ -1,5 +1,6 @@
 package com.mayu.practice;
 
+import com.mayu.NeptuneApplication;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;

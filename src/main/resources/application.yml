@@ -1,6 +1,7 @@
 spring:
   profiles:
     active: test
-
+  servlet:
+    context-path: /mayu
 server:
-  port: 8888
+  port: 15678
